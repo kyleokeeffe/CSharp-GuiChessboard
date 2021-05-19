@@ -4,18 +4,64 @@ using System.Text;
 using System.Collections;
 using System.Windows.Shapes;
 using GuiChessboard.Models;
+using System.Windows.Controls;
 
 namespace GuiChessboard.Models
-{ public delegate Position InnerPattern(int x, int y, int directionModifier, int index);
+{ 
+    public delegate Position InnerPattern(int x, int y, int directionModifier, int index);
+
     public class MovementPattern
     {
-       
-
         public ArrayList MoveFunctions { get; set; }
-
         private MovementPattern(ArrayList moveFunctions)
         {
             this.MoveFunctions = moveFunctions;
+        }
+
+        public static ArrayList CreatePattern(Grid gridBoard, Piece pieceClicked)
+        {
+            Dictionary<System.Windows.Shapes.Rectangle, Piece> availableEmptySquares = new Dictionary<System.Windows.Shapes.Rectangle, Piece>();
+            Dictionary<System.Windows.Shapes.Rectangle, PieceTake> availableOccupiedSquares = new Dictionary<System.Windows.Shapes.Rectangle, PieceTake>();
+            ArrayList patternSquares = new ArrayList();
+
+            int directionModifier = (int)pieceClicked.Color;
+            int x = pieceClicked.XPos;
+            int y = pieceClicked.YPos;
+
+            for (int i = 0; i < pieceClicked.MovePattern.MoveFunctions.Count; i++)
+            {
+                Position thisPosition;
+                int j = 0;
+                bool keepGoing = true;
+                do
+                {
+                    InnerPattern moveFunctionDel = (InnerPattern)pieceClicked.MovePattern.MoveFunctions[i];
+                    Piece intersectingPiece;
+                    Rectangle thisSquare;
+
+                    thisPosition = moveFunctionDel(x, y, directionModifier, (j + 1));
+                    intersectingPiece = MainWindow.CheckSquareForPiece(thisPosition);
+                    thisSquare = Position.ConvertPositionToSquare(gridBoard,thisPosition);
+                    
+                    if (thisPosition.X > 0 && thisPosition.X < 9 && thisPosition.Y < 9 && thisPosition.Y > 0)
+                    {
+                        if (intersectingPiece == null)
+                            availableEmptySquares.Add(thisSquare, pieceClicked);
+                        else
+                        {
+                            availableOccupiedSquares.Add(thisSquare, new PieceTake(pieceClicked, intersectingPiece));
+                            break;
+                        }
+                        j++;
+                    }
+                    else
+                        keepGoing = false;
+                }
+                while (keepGoing);
+            }
+            patternSquares.Add(availableEmptySquares);
+            patternSquares.Add(availableOccupiedSquares);
+            return patternSquares;
         }
 
         public static MovementPattern NullPattern(int x, int y, PieceColour color)
@@ -43,7 +89,6 @@ namespace GuiChessboard.Models
             queenBackLeft = new InnerPattern(BackLeft);
             queenBackRight = new InnerPattern(BackRight);
 
-
             pieceDirections.Add(queenForward);
             pieceDirections.Add(queenBack);
             pieceDirections.Add(queenLeft);
@@ -52,7 +97,6 @@ namespace GuiChessboard.Models
             pieceDirections.Add(queenForwardRight);
             pieceDirections.Add(queenBackLeft);
             pieceDirections.Add(queenBackRight);
-
 
             return new MovementPattern(pieceDirections);
         }
@@ -68,19 +112,11 @@ namespace GuiChessboard.Models
             bishopBackLeft = new InnerPattern(BackLeft);
             bishopBackRight = new InnerPattern(BackRight);
 
-
             pieceDirections.Add(bishopForwardLeft);
             pieceDirections.Add(bishopForwardRight);
             pieceDirections.Add(bishopBackLeft);
             pieceDirections.Add(bishopBackRight);
 
-
-            /*pieceDirections.Add(ForwardLeft(x,y,directionModifier));
-            pieceDirections.Add(ForwardRight());
-            pieceDirections.Add(BackLeft());
-            pieceDirections.Add(BackRight());
-            */
-            //xPos + i, yPos + i)},function(xPos, yPos, i) { return new Position(xPos + i, yPos - i)},function(xPos, yPos, i) { return new Position(xPos - i, yPos + i)},function(xPos, yPos, i) { return new Position(xPos - i, yPos - i)}]);
             return new MovementPattern(pieceDirections);
         }
 
@@ -100,18 +136,17 @@ namespace GuiChessboard.Models
             rookLeft = new InnerPattern(Left);
             rookRight = new InnerPattern(Right);
 
-
             pieceDirections.Add(rookForward);
             pieceDirections.Add(rookBack);
             pieceDirections.Add(rookLeft);
             pieceDirections.Add(rookRight);
-
 
             return new MovementPattern(pieceDirections);
         }
 
         public static MovementPattern PawnPattern(int x, int y, PieceColour color)
         {
+
             return new MovementPattern(new ArrayList());
         }
         
@@ -119,14 +154,10 @@ namespace GuiChessboard.Models
 
         public static Position Forward(int x, int y, int directionModifier, int index)
         {
-
-
             int newX, newY;
 
             newX = x;
             newY = y + (index * directionModifier);
-
-
 
             return new Position(newX, newY);
         }
@@ -134,66 +165,73 @@ namespace GuiChessboard.Models
        
         public static Position ForwardLeft(int x, int y, int directionModifier, int index)
         {
-            
             int newX, newY;
 
             newX = x - (index * directionModifier);
             newY = y + (index * directionModifier);
 
-
-
-
             return new Position(newX, newY);
         }
 
+        public static Position ForwardLeft(int x, int y, int directionModifier, int index, int distanceLimit)
+        {
+            int newX, newY;
+
+            newX = x - (index * directionModifier);
+            newY = y + (index * directionModifier);
+
+            return new Position(newX, newY);
+        }
         public static Position ForwardRight(int x, int y, int directionModifier, int index)
         {
-
             int newX, newY;
 
             newX = x + (index * directionModifier);
             newY = y + (index * directionModifier);
+
             return new Position(newX, newY);
         }
 
         public static Position Back(int x, int y, int directionModifier, int index)
         {
-
             int newX, newY;
 
             newX = x;
             newY = y - (index * directionModifier);
+
             return new Position(newX, newY);
         }
 
         public static Position BackLeft(int x, int y, int directionModifier, int index)
         {
-
             int newX, newY;
 
             newX = x - (index * directionModifier);
             newY = y - (index * directionModifier);
+
             return new Position(newX, newY);
         }
 
         public static Position BackRight(int x, int y, int directionModifier, int index)
         {
-
             int newX, newY;
 
             newX = x + (index * directionModifier);
             newY = y - (index * directionModifier);
+
             return new Position(newX, newY);
         }
+
         public static Position Left(int x, int y, int directionModifier, int index)
         {
-
             int newX, newY;
 
             newX = x - (index * directionModifier);
             newY = y;
+
             return new Position(newX, newY);
         }
+
         public static Position Right(int x, int y, int directionModifier, int index)
         {
 
@@ -201,6 +239,7 @@ namespace GuiChessboard.Models
 
             newX = x + (index * directionModifier);
             newY = y;
+
             return new Position(newX, newY);
         }
     }

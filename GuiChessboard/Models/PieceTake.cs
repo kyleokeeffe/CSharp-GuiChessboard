@@ -14,8 +14,5 @@ namespace GuiChessboard.Models
             this.OriginatingPiece = originatingPiece;
             this.DestinationPiece = destinationPiece;
         }
-
-
-
     }
 }

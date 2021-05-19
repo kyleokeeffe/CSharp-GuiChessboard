@@ -18,10 +18,7 @@ using System.Diagnostics;
 using System.Drawing;
 
 
-//didnt fix the border problem
-//now the move arry index stops after one 
-//so once it leaves the inner while loop its found false imediately at the next cycle 
-//for values 0 and 9
+
 
 namespace GuiChessboard
 {
@@ -31,19 +28,17 @@ namespace GuiChessboard
     public partial class MainWindow : Window
     {
         public delegate void EventCreator(object obj, MouseButtonEventArgs e);
-
+        
         ArrayList emptyBoardColors = new ArrayList();
-        List<Piece> piecesList = new List<Piece>();
+        static List<Piece> piecesList = new List<Piece>();
         protected Dictionary<System.Windows.Shapes.Rectangle, Piece> availableEmptySquares;
         protected Dictionary<System.Windows.Shapes.Rectangle, PieceTake> availableOccupiedSquares;
-
+        
         public MainWindow()
         {
             InitializeComponent();
        
             emptyBoardColors =  SaveEmptyBoardColors();
-
-
 
             Piece bishop1 = new Piece(PieceColour.Black, PieceType.Bishop, cell43);
             Piece bishop2 = new Piece(PieceColour.White, PieceType.Bishop, cell65);
@@ -58,61 +53,34 @@ namespace GuiChessboard
             lblMobile.Content = "hello";
             lblMobile.Margin = new Thickness(0, 0, 100,100);
 
-            // btnSubmit.Click += HitSubmitButton;
             grdBoard.Loaded += PaintPieces;
 
             grdBoard.MouseDown += IdentifyClick;
-
-           
-
         }
 
         public void IdentifyClick(object obj, MouseButtonEventArgs e)
         {
-           
-           // e.Source.
             var pieceClicked = piecesList.Find(piece => piece.CurrentLocation == (System.Windows.Shapes.Rectangle)e.Source);
 
-
-         
-
             if (pieceClicked != null)
-            {
-                //you clicked a piece;
                 PaintPieceMovePattern(pieceClicked);
-
-
-            }
             else if (availableEmptySquares == null)
             {
                 PaintEmptyBoardColors();
                 PaintPieces();
-             
-              
-                
-
             }
             else if (availableEmptySquares.ContainsKey((System.Windows.Shapes.Rectangle)e.Source) == false)
             {
                 foreach (System.Windows.Shapes.Rectangle emptySquare in availableEmptySquares.Keys)
-                        emptySquare.MouseLeftButtonDown -= EmptyMoveSquareClicked;
-                
+                    emptySquare.MouseLeftButtonDown -= EmptyMoveSquareClicked;
 
-              
-                    foreach (var pieceSquare in availableOccupiedSquares.Keys)
-                        pieceSquare.MouseLeftButtonDown -= OccupiedMoveSquareClicked;
+                foreach (var pieceSquare in availableOccupiedSquares.Keys)
+                    pieceSquare.MouseLeftButtonDown -= OccupiedMoveSquareClicked;
+
                 PaintEmptyBoardColors();
                 PaintPieces();
             }
-              
-            
-         
-
         }
-
-        
-        //public void DrawThing(object sender, System.Windows.Forms.PaintEventArgs)
-
 
         public void PaintPieceMovePattern(Piece pieceClicked)
         {
@@ -122,8 +90,6 @@ namespace GuiChessboard
             int directionModifier = (int)pieceClicked.Color;
             int x = pieceClicked.XPos;
             int y = pieceClicked.YPos;
-  
-
 
             //if the new click is on another piece, remove the event listeners for the previous piece clicked
             if (availableEmptySquares != null)
@@ -143,8 +109,13 @@ namespace GuiChessboard
             availableEmptySquares = new Dictionary<System.Windows.Shapes.Rectangle, Piece>();
             availableOccupiedSquares = new Dictionary<System.Windows.Shapes.Rectangle, PieceTake>();
 
+            ArrayList patternSquares= MovementPattern.CreatePattern(grdBoard,pieceClicked);
+            availableEmptySquares = (Dictionary<System.Windows.Shapes.Rectangle, Piece>)patternSquares[0];
+            availableOccupiedSquares = (Dictionary<System.Windows.Shapes.Rectangle, PieceTake>)patternSquares[1];
 
+            MovementPattern.CreatePattern(grdBoard,pieceClicked);
 
+            /*
 
             //fill move square arrays
             for (int i = 0; i < pieceClicked.MovePattern.MoveFunctions.Count; i++)
@@ -177,7 +148,7 @@ namespace GuiChessboard
                 while (keepGoing);
                // while (thisPosition.X > 1 && thisPosition.X < 8 && thisPosition.Y < 8 && thisPosition.Y > 1);
             }
-
+            */
 
             //paint squares
             if (availableEmptySquares != null)
@@ -197,47 +168,32 @@ namespace GuiChessboard
                         pieceSquare.MouseLeftButtonDown += OccupiedMoveSquareClicked;
                     }
             }
-
-
-
-            //create d
         }
 
         public void EmptySquareClicked(object obj, MouseButtonEventArgs e)
         {
             System.Windows.Shapes.Rectangle thisSquare = (System.Windows.Shapes.Rectangle)obj;
-
             Piece originatingPiece = availableEmptySquares.GetValueOrDefault(thisSquare);
-
 
             originatingPiece.CurrentLocation = thisSquare;
 
-
             PaintEmptyBoardColors();
             PaintPieces();
-
         }
 
         public void EmptyMoveSquareClicked(object obj, MouseButtonEventArgs e)
         {
             System.Windows.Shapes.Rectangle thisSquare = (System.Windows.Shapes.Rectangle)obj;
-           
-        
-            
-                Piece originatingPiece = availableEmptySquares.GetValueOrDefault(thisSquare);
-           
-       
+            Piece originatingPiece = availableEmptySquares.GetValueOrDefault(thisSquare);
+
             originatingPiece.CurrentLocation = thisSquare;
-            
-    
+
             PaintEmptyBoardColors();
             PaintPieces();
-           
         }
 
         public void OccupiedMoveSquareClicked(object obj, MouseButtonEventArgs e)
         {
-
             System.Windows.Shapes.Rectangle thisSquare = (System.Windows.Shapes.Rectangle)obj;
             PieceTake thisPiecetake = availableOccupiedSquares.GetValueOrDefault(thisSquare);
            
@@ -250,7 +206,7 @@ namespace GuiChessboard
             MessageBox.Show($"{thisPiecetake.OriginatingPiece.Color} {thisPiecetake.OriginatingPiece.Name} takes {thisPiecetake.DestinationPiece.Color} {thisPiecetake.DestinationPiece.Name}");
         }
 
-        public Piece CheckSquareForPiece(Position position)
+        public static Piece CheckSquareForPiece(Position position)
         {
             //check if theres a piece on it
             Piece thisPiece;
@@ -261,52 +217,34 @@ namespace GuiChessboard
             catch (Exception)
             {
                 thisPiece = null;
-            
             }
             return thisPiece;
         }
         
-        public System.Windows.Shapes.Rectangle ConvertPositionToSquare(Position position)
-        {
-
-            string name = $"cell{position.X}{position.Y}";
-            System.Windows.Shapes.Rectangle thisRect = (System.Windows.Shapes.Rectangle)grdBoard.FindName(name);
-
-            return thisRect;
-        }
-
         public void PaintPieces(object obj, EventArgs e)
         { 
-        
             for(int i = 0; i< piecesList.Count; i++)
             {
                 var thisColor = piecesList[i].Color.ToString();
-
                 SolidColorBrush colorConvertor = (SolidColorBrush)new BrushConverter().ConvertFromString(thisColor);
                
                 piecesList[i].CurrentLocation.Fill = colorConvertor;
-                
-               //piecesList[i].CurrentLocation.
             }
         
         }
 
         public void PaintPieces()
         {
-
             for (int i = 0; i < piecesList.Count; i++)
             {
-                //piecesList[i].CurrentLocation.Fill = Brushes.Blue;
                 var thisColor = piecesList[i].Color.ToString();
-
                 SolidColorBrush colorConvertor = (SolidColorBrush)new BrushConverter().ConvertFromString(thisColor);
 
                 piecesList[i].CurrentLocation.Fill = colorConvertor;
                 
-               // piecesList[i].CurrentLocation.Fill=
-
+                //Trying to figure out how to print label in same square as piece
+                // piecesList[i].CurrentLocation.Fill=
                 //var thisPieceLocation = piecesList[i].CurrentLocation.RenderedGeometry.Bounds;
-
                 //lblMobile.Content = piecesList[i].Name.ToString().Substring(0, 2);
                 //lblMobile.Margin = new Thickness(thisPieceLocation.Left, thisPieceLocation.Top, thisPieceLocation.Right, thisPieceLocation.Bottom);
             }
@@ -315,53 +253,32 @@ namespace GuiChessboard
 
         public ArrayList SaveEmptyBoardColors()
         {
-
             ArrayList emptyBoardColors = new ArrayList();
-
-            //List<string> emptyBoardColors = new List<string>();
             foreach (var thing in grdBoard.Children)
             {
                 if (thing.GetType() == typeof(System.Windows.Shapes.Rectangle))
                 {
                     System.Windows.Shapes.Rectangle thisThing = (System.Windows.Shapes.Rectangle)thing;
                     emptyBoardColors.Add(thisThing.Fill);
-
                 }
                 else
-                { 
                     emptyBoardColors.Add(thing);
-                }
             }
             return emptyBoardColors;
         }
             
         public void PaintEmptyBoardColors()
         {
-            //List<string> emptyBoardColors = new List<string>();
             for(int i =0;i< grdBoard.Children.Count; i++)
             {
                 var previousColor = emptyBoardColors[i];
-                
-                
+
                 if (previousColor.GetType() == typeof(System.Windows.Media.SolidColorBrush))
                 {
-                    
                     System.Windows.Shapes.Rectangle thing = (System.Windows.Shapes.Rectangle)grdBoard.Children[i];
-                    //emptyBoardColors.Add(square.Fill.ToString());
                     thing.Fill = (System.Windows.Media.Brush)previousColor;
                 }
-                else
-                { }
-
-
-                
             }
-            
-
         }
-
-        
-        
-
-        }
-    } 
+    }
+} 

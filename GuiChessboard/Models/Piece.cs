@@ -9,17 +9,12 @@ using GuiChessboard.Models;
 
 namespace GuiChessboard.Models
 {
-    
     public class Piece
     {
         public delegate MovementPattern MyDelegate(int xPos, int yPos, PieceColour color);
 
-
-       
         public PieceType Name { get; set; }
         public PieceColour Color { get; set; }
-        //position
-        
         public Rectangle CurrentLocation { get; set; }
         public int XPos
         {
@@ -47,10 +42,8 @@ namespace GuiChessboard.Models
         {
             get
             {
-
                 MyDelegate thisPiecePattern;
 
-                
                 switch (this.Name)
                 {
                     case PieceType.King:
@@ -84,111 +77,16 @@ namespace GuiChessboard.Models
             }
         }
 
-
         public Piece(PieceColour color,PieceType name, Rectangle currentLocation)
         {
             this.Name = name;
             this.Color = color;
             this.CurrentLocation = currentLocation;
-
-
-
-
         }
     
-
         public override string ToString()
         {
             return $"{this.Name}, {this.Color},{string.Join(", ", this.MovePattern.MoveFunctions.ToString())}";
         }
     }
-    /*public class Rook : Piece
-    {
-
-        public Rook(List<DirectionDistance> movementPattern, Color color, PieceType name = PieceType.Rook) : base(movementPattern,color,name)
-        {
-            
-            
-
-        }
-        public override string ToString()
-        {
-            return $"{this.Name}, {this.Color},{string.Join(", ", this.MovementPattern)}";
-        }
-
-
-
-    }
-    public class Bishop : Piece
-    {
-    public Bishop(List<DirectionDistance> movementPattern, Color color, PieceType name = PieceType.Bishop) : base(movementPattern,color,name)
-        {
-            
-            
-
-        }
-        public override string ToString()
-        {
-            return $"{this.Name}, {this.Color},{string.Join(", ", this.MovementPattern)}";
-        }
-
-    }
-    public class Knight : Piece
-    {
-        public Knight(List<DirectionDistance> movementPattern, Color color, PieceType name = PieceType.Knight) : base(movementPattern, color, name)
-        {
-
-
-
-        }
-        public override string ToString()
-        {
-            return $"{this.Name}, {this.Color},{string.Join(", ", this.MovementPattern)}";
-        }
-
-    }
-    public class Pawn : Piece
-    {
-        public Pawn(List<DirectionDistance> movementPattern, Color color, PieceType name = PieceType.Pawn) : base(movementPattern, color, name)
-        {
-
-
-
-        }
-        public override string ToString()
-        {
-            return $"{this.Name}, {this.Color},{string.Join(", ", this.MovementPattern)}";
-        }
-
-    }
-    public class King : Piece
-    {
-        public King(List<DirectionDistance> movementPattern, Color color, PieceType name = PieceType.King) : base(movementPattern, color, name)
-        {
-
-
-
-        }
-        public override string ToString()
-        {
-            return $"{this.Name}, {this.Color},{string.Join(", ", this.MovementPattern)}";
-        }
-
-    }
-    public class Queen : Piece
-    {
-        public Queen(List<DirectionDistance> movementPattern, Color color, PieceType name = PieceType.Queen) : base(movementPattern, color, name)
-        {
-
-
-
-        }
-        public override string ToString()
-        {
-            return $"{this.Name}, {this.Color},{string.Join(", ", this.MovementPattern)}";
-        }
-
-    }
-
-    */
 }
