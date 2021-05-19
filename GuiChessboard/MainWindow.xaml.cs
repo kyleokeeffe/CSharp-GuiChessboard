@@ -17,14 +17,9 @@ using System.Collections;
 using System.Diagnostics;
 using System.Drawing;
 
-
-
-
 namespace GuiChessboard
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    //testing Git Push
     public partial class MainWindow : Window
     {
         public delegate void EventCreator(object obj, MouseButtonEventArgs e);
