@@ -17,9 +17,9 @@ using System.Collections;
 using System.Diagnostics;
 using System.Drawing;
 
+//version 2 - refactored MainWindow
 namespace GuiChessboard
 {
-    //testing Git Push
     public partial class MainWindow : Window
     {
         public delegate void EventCreator(object obj, MouseButtonEventArgs e);
