@@ -51,81 +51,83 @@
                 <Label Content="7" Grid.Row="2" Grid.Column="0"/>
                 <Label Content="8" Grid.Row="1" Grid.Column="0"/>
 
-        <Border Name="wholeBoard" BorderThickness="2" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="8" Grid.RowSpan="8"/>
-        <WindowsFormsHost Name="windowsFormHost"/>
+        <!--<Border Name="wholeBoard" BorderThickness="2" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="8" Grid.RowSpan="8"/>-->
 
 
-        <Border Name="cell18" Grid.Column="1" Grid.Row="1" Background="White"><Label Name="lblCell18"/></Border>
-        <Border Name="cell28" Grid.Column="2" Grid.Row="1" Background="Gray"><Label Name="lblCell28"/></Border>
 
-        <Border Name="cell38" Grid.Column="3" Grid.Row="1" Background="White"><Label Name="lblCell38"/></Border>
-            <Border Name="cell48" Grid.Column="4" Grid.Row="1" Background="Gray"> <Label Name="lblCell48"/></Border>
-            <Border Name="cell58" Grid.Column="5" Grid.Row="1" Background="White"><Label Name="lblCell58"/></Border>
-            <Border Name="cell68" Grid.Column="6" Grid.Row="1" Background="Gray"> <Label Name="lblCell68"/></Border>
-            <Border Name="cell78" Grid.Column="7" Grid.Row="1" Background="White"><Label Name="lblCell78"/></Border>
-            <Border Name="cell88" Grid.Column="8" Grid.Row="1" Background="Gray"> <Label Name="lblCell88"/></Border>
-                                                                                                         
-            <Border Name="cell17" Grid.Column="1" Grid.Row="2" Background="Gray"> <Label Name="lblCell17"/></Border>
-            <Border Name="cell27" Grid.Column="2" Grid.Row="2" Background="White"><Label Name="lblCell27"/></Border>
-            <Border Name="cell37" Grid.Column="3" Grid.Row="2" Background="Gray"> <Label Name="lblCell37"/></Border>
-            <Border Name="cell47" Grid.Column="4" Grid.Row="2" Background="White"><Label Name="lblCell47"/></Border>
-            <Border Name="cell57" Grid.Column="5" Grid.Row="2" Background="Gray"> <Label Name="lblCell57"/></Border>
-            <Border Name="cell67" Grid.Column="6" Grid.Row="2" Background="White"><Label Name="lblCell67"/></Border>
-            <Border Name="cell77" Grid.Column="7" Grid.Row="2" Background="Gray"> <Label Name="lblCell77"/></Border>
-            <Border Name="cell87" Grid.Column="8" Grid.Row="2" Background="White"><Label Name="lblCell87"/></Border>
-                                                                                                         
-            <Border Name="cell16" Grid.Column="1" Grid.Row="3" Background="White"><Label Name="lblCell16"/></Border>
-            <Border Name="cell26" Grid.Column="2" Grid.Row="3" Background="Gray"> <Label Name="lblCell26"/></Border> 
-            <Border Name="cell36" Grid.Column="3" Grid.Row="3" Background="White"><Label Name="lblCell36"/></Border>
-            <Border Name="cell46" Grid.Column="4" Grid.Row="3" Background="Gray"> <Label Name="lblCell46"/></Border>
-            <Border Name="cell56" Grid.Column="5" Grid.Row="3" Background="White"><Label Name="lblCell56"/></Border>
-            <Border Name="cell66" Grid.Column="6" Grid.Row="3" Background="Gray"> <Label Name="lblCell66"/></Border>
-            <Border Name="cell76" Grid.Column="7" Grid.Row="3" Background="White"><Label Name="lblCell76"/></Border>
-            <Border Name="cell86" Grid.Column="8" Grid.Row="3" Background="Gray"> <Label Name="lblCell86"/></Border>
-                                                                                                         
-            <Border Name="cell15" Grid.Column="1" Grid.Row="4" Background="Gray"> <Label Name="lblCell15"/></Border>
-            <Border Name="cell25" Grid.Column="2" Grid.Row="4" Background="White"><Label Name="lblCell25"/></Border>
-            <Border Name="cell35" Grid.Column="3" Grid.Row="4" Background="Gray"> <Label Name="lblCell35"/></Border>
-            <Border Name="cell45" Grid.Column="4" Grid.Row="4" Background="White"><Label Name="lblCell45"/></Border>
-            <Border Name="cell55" Grid.Column="5" Grid.Row="4" Background="Gray"> <Label Name="lblCell55"/></Border>
-            <Border Name="cell65" Grid.Column="6" Grid.Row="4" Background="White"><Label Name="lblCell65"/></Border>
-            <Border Name="cell75" Grid.Column="7" Grid.Row="4" Background="Gray"> <Label Name="lblCell75"/></Border>
-            <Border Name="cell85" Grid.Column="8" Grid.Row="4" Background="White"><Label Name="lblCell85"/></Border>
-                                                                                                         
-            <Border Name="cell14" Grid.Column="1" Grid.Row="5" Background="White"><Label Name="lblCell14"/></Border>
-            <Border Name="cell24" Grid.Column="2" Grid.Row="5" Background="Gray"> <Label Name="lblCell24"/></Border>
-            <Border Name="cell34" Grid.Column="3" Grid.Row="5" Background="White"><Label Name="lblCell34"/></Border>
-            <Border Name="cell44" Grid.Column="4" Grid.Row="5" Background="Gray"> <Label Name="lblCell44"/></Border>
-            <Border Name="cell54" Grid.Column="5" Grid.Row="5" Background="White"><Label Name="lblCell54"/></Border>
-            <Border Name="cell64" Grid.Column="6" Grid.Row="5" Background="Gray"> <Label Name="lblCell64"/></Border>
-            <Border Name="cell74" Grid.Column="7" Grid.Row="5" Background="White"><Label Name="lblCell74"/></Border>
-            <Border Name="cell84" Grid.Column="8" Grid.Row="5" Background="Gray"> <Label Name="lblCell84"/></Border>
-                                                                                                         
-            <Border Name="cell13" Grid.Column="1" Grid.Row="6" Background="Gray"> <Label Name="lblCell13"/></Border>
-            <Border Name="cell23" Grid.Column="2" Grid.Row="6" Background="White"><Label Name="lblCell23"/></Border>
-            <Border Name="cell33" Grid.Column="3" Grid.Row="6" Background="Gray"> <Label Name="lblCell33"/></Border>
-            <Border Name="cell43" Grid.Column="4" Grid.Row="6" Background="White"><Label Name="lblCell43"/></Border>
-            <Border Name="cell53" Grid.Column="5" Grid.Row="6" Background="Gray"> <Label Name="lblCell53"/></Border>
-            <Border Name="cell63" Grid.Column="6" Grid.Row="6" Background="White"><Label Name="lblCell63"/></Border>
-            <Border Name="cell73" Grid.Column="7" Grid.Row="6" Background="Gray"> <Label Name="lblCell73"/></Border>
-            <Border Name="cell83" Grid.Column="8" Grid.Row="6" Background="White"><Label Name="lblCell83"/></Border>
-                                                                                                         
-            <Border Name="cell12" Grid.Column="1" Grid.Row="7" Background="White"><Label Name="lblCell12"/></Border>
-            <Border Name="cell22" Grid.Column="2" Grid.Row="7" Background="Gray"> <Label Name="lblCell22"/></Border>
-            <Border Name="cell32" Grid.Column="3" Grid.Row="7" Background="White"><Label Name="lblCell32"/></Border>
-            <Border Name="cell42" Grid.Column="4" Grid.Row="7" Background="Gray"> <Label Name="lblCell42"/></Border>
-            <Border Name="cell52" Grid.Column="5" Grid.Row="7" Background="White"><Label Name="lblCell52"/></Border>
-            <Border Name="cell62" Grid.Column="6" Grid.Row="7" Background="Gray"> <Label Name="lblCell62"/></Border>
-            <Border Name="cell72" Grid.Column="7" Grid.Row="7" Background="White"><Label Name="lblCell72"/></Border>
-            <Border Name="cell82" Grid.Column="8" Grid.Row="7" Background="Gray"> <Label Name="lblCell82"/></Border>
-                                                                                                         
-            <Border Name="cell11" Grid.Column="1" Grid.Row="8" Background="Gray"> <Label Name="lblCell11"/></Border>
-            <Border Name="cell21" Grid.Column="2" Grid.Row="8" Background="White"><Label Name="lblCell21"/></Border>
-            <Border Name="cell31" Grid.Column="3" Grid.Row="8" Background="Gray"> <Label Name="lblCell31"/></Border>
-            <Border Name="cell41" Grid.Column="4" Grid.Row="8" Background="White"><Label Name="lblCell41"/></Border>
-            <Border Name="cell51" Grid.Column="5" Grid.Row="8" Background="Gray"> <Label Name="lblCell51"/></Border>
-            <Border Name="cell61" Grid.Column="6" Grid.Row="8" Background="White"><Label Name="lblCell61"/></Border>
-            <Border Name="cell71" Grid.Column="7" Grid.Row="8" Background="Gray"> <Label Name="lblCell71"/></Border>
+        <Border Name="cell18" Grid.Column="1" Grid.Row="1" Background="White">
+            <Label Name="lblCell18" IsHitTestVisible="False"/></Border>
+        <Border Name="cell28" Grid.Column="2" Grid.Row="1" Background="Gray">
+            <Label Name="lblCell28" IsHitTestVisible="False"/></Border>
+
+            <Border Name="cell38" Grid.Column="3" Grid.Row="1" Background="White"><Label Name="lblCell38" IsHitTestVisible="False"/></Border>
+            <Border Name="cell48" Grid.Column="4" Grid.Row="1" Background="Gray"><Label Name="lblCell48" IsHitTestVisible="False"/></Border>
+            <Border Name="cell58" Grid.Column="5" Grid.Row="1" Background="White"><Label Name="lblCell58" IsHitTestVisible="False"/></Border>
+            <Border Name="cell68" Grid.Column="6" Grid.Row="1" Background="Gray"> <Label Name="lblCell68" IsHitTestVisible="False"/></Border>
+            <Border Name="cell78" Grid.Column="7" Grid.Row="1" Background="White"><Label Name="lblCell78" IsHitTestVisible="False"/></Border>
+            <Border Name="cell88" Grid.Column="8" Grid.Row="1" Background="Gray"> <Label Name="lblCell88" IsHitTestVisible="False"/></Border>
+                                                                                                          
+            <Border Name="cell17" Grid.Column="1" Grid.Row="2" Background="Gray"> <Label Name="lblCell17" IsHitTestVisible="False"/></Border>
+            <Border Name="cell27" Grid.Column="2" Grid.Row="2" Background="White"><Label Name="lblCell27" IsHitTestVisible="False"/></Border>
+            <Border Name="cell37" Grid.Column="3" Grid.Row="2" Background="Gray"> <Label Name="lblCell37" IsHitTestVisible="False"/></Border>
+            <Border Name="cell47" Grid.Column="4" Grid.Row="2" Background="White"><Label Name="lblCell47" IsHitTestVisible="False"/></Border>
+            <Border Name="cell57" Grid.Column="5" Grid.Row="2" Background="Gray"> <Label Name="lblCell57" IsHitTestVisible="False"/></Border>
+            <Border Name="cell67" Grid.Column="6" Grid.Row="2" Background="White"><Label Name="lblCell67" IsHitTestVisible="False"/></Border>
+            <Border Name="cell77" Grid.Column="7" Grid.Row="2" Background="Gray"> <Label Name="lblCell77" IsHitTestVisible="False"/></Border>
+            <Border Name="cell87" Grid.Column="8" Grid.Row="2" Background="White"><Label Name="lblCell87" IsHitTestVisible="False"/></Border>
+                                                                                                          
+            <Border Name="cell16" Grid.Column="1" Grid.Row="3" Background="White"><Label Name="lblCell16" IsHitTestVisible="False"/></Border>
+            <Border Name="cell26" Grid.Column="2" Grid.Row="3" Background="Gray"> <Label Name="lblCell26" IsHitTestVisible="False"/></Border> 
+            <Border Name="cell36" Grid.Column="3" Grid.Row="3" Background="White"><Label Name="lblCell36" IsHitTestVisible="False"/></Border>
+            <Border Name="cell46" Grid.Column="4" Grid.Row="3" Background="Gray"> <Label Name="lblCell46" IsHitTestVisible="False"/></Border>
+            <Border Name="cell56" Grid.Column="5" Grid.Row="3" Background="White"><Label Name="lblCell56" IsHitTestVisible="False"/></Border>
+            <Border Name="cell66" Grid.Column="6" Grid.Row="3" Background="Gray"> <Label Name="lblCell66" IsHitTestVisible="False"/></Border>
+            <Border Name="cell76" Grid.Column="7" Grid.Row="3" Background="White"><Label Name="lblCell76" IsHitTestVisible="False"/></Border>
+            <Border Name="cell86" Grid.Column="8" Grid.Row="3" Background="Gray"> <Label Name="lblCell86" IsHitTestVisible="False"/></Border>
+                                                                                                          
+            <Border Name="cell15" Grid.Column="1" Grid.Row="4" Background="Gray"> <Label Name="lblCell15" IsHitTestVisible="False"/></Border>
+            <Border Name="cell25" Grid.Column="2" Grid.Row="4" Background="White"><Label Name="lblCell25" IsHitTestVisible="False"/></Border>
+            <Border Name="cell35" Grid.Column="3" Grid.Row="4" Background="Gray"> <Label Name="lblCell35" IsHitTestVisible="False"/></Border>
+            <Border Name="cell45" Grid.Column="4" Grid.Row="4" Background="White"><Label Name="lblCell45" IsHitTestVisible="False"/></Border>
+            <Border Name="cell55" Grid.Column="5" Grid.Row="4" Background="Gray"> <Label Name="lblCell55" IsHitTestVisible="False"/></Border>
+            <Border Name="cell65" Grid.Column="6" Grid.Row="4" Background="White"><Label Name="lblCell65" IsHitTestVisible="False"/></Border>
+            <Border Name="cell75" Grid.Column="7" Grid.Row="4" Background="Gray"> <Label Name="lblCell75" IsHitTestVisible="False"/></Border>
+            <Border Name="cell85" Grid.Column="8" Grid.Row="4" Background="White"><Label Name="lblCell85" IsHitTestVisible="False"/></Border>
+                                                                                                          
+            <Border Name="cell14" Grid.Column="1" Grid.Row="5" Background="White"><Label Name="lblCell14" IsHitTestVisible="False"/></Border>
+            <Border Name="cell24" Grid.Column="2" Grid.Row="5" Background="Gray"> <Label Name="lblCell24" IsHitTestVisible="False"/></Border>
+            <Border Name="cell34" Grid.Column="3" Grid.Row="5" Background="White"><Label Name="lblCell34" IsHitTestVisible="False"/></Border>
+            <Border Name="cell44" Grid.Column="4" Grid.Row="5" Background="Gray"> <Label Name="lblCell44" IsHitTestVisible="False"/></Border>
+            <Border Name="cell54" Grid.Column="5" Grid.Row="5" Background="White"><Label Name="lblCell54" IsHitTestVisible="False"/></Border>
+            <Border Name="cell64" Grid.Column="6" Grid.Row="5" Background="Gray"> <Label Name="lblCell64" IsHitTestVisible="False"/></Border>
+            <Border Name="cell74" Grid.Column="7" Grid.Row="5" Background="White"><Label Name="lblCell74" IsHitTestVisible="False"/></Border>
+            <Border Name="cell84" Grid.Column="8" Grid.Row="5" Background="Gray"> <Label Name="lblCell84" IsHitTestVisible="False"/></Border>
+                                                                                                       
+            <Border Name="cell13" Grid.Column="1" Grid.Row="6" Background="Gray"> <Label Name="lblCell13" IsHitTestVisible="False"/></Border>
+            <Border Name="cell23" Grid.Column="2" Grid.Row="6" Background="White"><Label Name="lblCell23" IsHitTestVisible="False"/></Border>
+            <Border Name="cell33" Grid.Column="3" Grid.Row="6" Background="Gray"> <Label Name="lblCell33" IsHitTestVisible="False"/></Border>
+            <Border Name="cell43" Grid.Column="4" Grid.Row="6" Background="White"><Label Name="lblCell43" IsHitTestVisible="False"/></Border>
+            <Border Name="cell53" Grid.Column="5" Grid.Row="6" Background="Gray"> <Label Name="lblCell53" IsHitTestVisible="False"/></Border>
+            <Border Name="cell63" Grid.Column="6" Grid.Row="6" Background="White"><Label Name="lblCell63" IsHitTestVisible="False"/></Border>
+            <Border Name="cell73" Grid.Column="7" Grid.Row="6" Background="Gray"> <Label Name="lblCell73" IsHitTestVisible="False"/></Border>
+            <Border Name="cell83" Grid.Column="8" Grid.Row="6" Background="White"><Label Name="lblCell83" IsHitTestVisible="False"/></Border>
+                                                                                                        
+            <Border Name="cell12" Grid.Column="1" Grid.Row="7" Background="White"><Label Name="lblCell12" IsHitTestVisible="False"/></Border>
+            <Border Name="cell22" Grid.Column="2" Grid.Row="7" Background="Gray"> <Label Name="lblCell22" IsHitTestVisible="False"/></Border>
+            <Border Name="cell32" Grid.Column="3" Grid.Row="7" Background="White"><Label Name="lblCell32" IsHitTestVisible="False"/></Border>
+            <Border Name="cell42" Grid.Column="4" Grid.Row="7" Background="Gray"> <Label Name="lblCell42" IsHitTestVisible="False"/></Border>
+            <Border Name="cell52" Grid.Column="5" Grid.Row="7" Background="White"><Label Name="lblCell52" IsHitTestVisible="False"/></Border>
+            <Border Name="cell62" Grid.Column="6" Grid.Row="7" Background="Gray"> <Label Name="lblCell62" IsHitTestVisible="False"/></Border>
+            <Border Name="cell72" Grid.Column="7" Grid.Row="7" Background="White"><Label Name="lblCell72" IsHitTestVisible="False"/></Border>
+            <Border Name="cell82" Grid.Column="8" Grid.Row="7" Background="Gray"> <Label Name="lblCell82" IsHitTestVisible="False"/></Border>
+                                                                                                          
+            <Border Name="cell11" Grid.Column="1" Grid.Row="8" Background="Gray"> <Label Name="lblCell11" IsHitTestVisible="False"/></Border>
+            <Border Name="cell21" Grid.Column="2" Grid.Row="8" Background="White"><Label Name="lblCell21" IsHitTestVisible="False"/></Border>
+            <Border Name="cell31" Grid.Column="3" Grid.Row="8" Background="Gray"> <Label Name="lblCell31" IsHitTestVisible="False"/></Border>
+            <Border Name="cell41" Grid.Column="4" Grid.Row="8" Background="White"><Label Name="lblCell41" IsHitTestVisible="False"/></Border>
+            <Border Name="cell51" Grid.Column="5" Grid.Row="8" Background="Gray"> <Label Name="lblCell51" IsHitTestVisible="False"/></Border>
+            <Border Name="cell61" Grid.Column="6" Grid.Row="8" Background="White"><Label Name="lblCell61" IsHitTestVisible="False"/></Border>
+            <Border Name="cell71" Grid.Column="7" Grid.Row="8" Background="Gray"> <Label Name="lblCell71" IsHitTestVisible="False"/></Border>
            
 
 

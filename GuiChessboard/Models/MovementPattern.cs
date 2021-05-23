@@ -41,7 +41,7 @@ namespace GuiChessboard.Models
 
                     thisPosition = moveFunctionDel(x, y, directionModifier, (j + 1));
                     intersectingPiece = MainWindow.CheckSquareForPiece(thisPosition);
-                    thisSquare = Position.ConvertPositionToSquare(gridBoard,thisPosition);
+                    thisSquare = Position.GetPositionSquare(gridBoard,thisPosition);
                     
                     if (thisPosition.X > 0 && thisPosition.X < 9 && thisPosition.Y < 9 && thisPosition.Y > 0)
                     {

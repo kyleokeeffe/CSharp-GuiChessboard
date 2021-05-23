@@ -16,12 +16,18 @@ namespace GuiChessboard.Models
             this.X = x;
             this.Y = y;
         }
-        public static System.Windows.Controls.Border ConvertPositionToSquare(Grid gridBoard,Position position)
+        public static System.Windows.Controls.Border GetPositionSquare(Grid gridBoard,Position position)
         {
             string name = $"cell{position.X}{position.Y}";
             System.Windows.Controls.Border thisRect = (System.Windows.Controls.Border)gridBoard.FindName(name);
 
             return thisRect;
+        }
+        public static System.Windows.Controls.Label GetPositionLabel(Grid gridBoard, Position position)
+        {
+            string name = $"lblCell{position.X}{position.Y}";
+            System.Windows.Controls.Label thisLabel = (System.Windows.Controls.Label)gridBoard.FindName(name);
+            return thisLabel;
         }
     }
 }

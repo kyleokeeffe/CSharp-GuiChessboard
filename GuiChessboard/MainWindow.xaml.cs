@@ -20,8 +20,7 @@ using System.Windows.Forms;
 
 //version 2 - refactored MainWindow
 
-//1. trying to figure out how to attach an event handler to a propoerty of an obejct 
-    //so that whenever the current location of a piece is set, it calls teh function to write the name
+//piece class should have a position property and current square, current label
 
 //2. make overloaded direction method with distance limitation for pawn/king 
 namespace GuiChessboard
@@ -29,7 +28,7 @@ namespace GuiChessboard
     public partial class MainWindow : Window
     {
        
-        private PictureBox pictureBox;
+     
         public delegate void EventCreator(object obj, MouseButtonEventArgs e);
         
         ArrayList emptyBoardColors = new ArrayList();
@@ -45,8 +44,7 @@ namespace GuiChessboard
        
             emptyBoardColors =  SaveEmptyBoardColors();
 
-            
-            //thisBox.Paint += new PaintEventHandler(this.thisBoxPaint);
+     
 
             Piece bishop1 = new Piece(PieceColour.Black, PieceType.Bishop, cell43);
             Piece bishop2 = new Piece(PieceColour.White, PieceType.Bishop, cell65);
@@ -59,14 +57,7 @@ namespace GuiChessboard
             piecesList.Add(queen1);
           
 
-            pictureBox = new PictureBox();
-            //pictureBox.Location = wholeBoard.Clip.Bounds.TopLeft;
-           
-            windowsFormHost.Child = pictureBox;
-           
-             //pictureBox.Paint += PaintLabel;
-           //or 
-           pictureBox.Paint += new PaintEventHandler(this.thisBoxPaint);
+       
             
             grdBoard.Loaded += PaintPieces;
           
@@ -74,63 +65,12 @@ namespace GuiChessboard
             grdBoard.MouseDown += IdentifyClick;
           
            
-            foreach(Piece piece in piecesList)
-            {
-            piece.PiecePrintedEvent  += MainWindow_PiecePrintedEvent;///////////////////////////
-            }
+         
             
             
         }
 
        
-
-        private void thisBoxPaint(object sender, PaintEventArgs e)
-        {
-
-        //    System.Drawing.Point boardLocation = new System.Drawing.Point((int)grdBoard.Margin.Left, (int)grdBoard.Margin.Top);
-           System.Windows.Point boardLocation = new System.Windows.Point();
-           var boardLocationPoint = grdBoard.TransformToAncestor(this).Transform(boardLocation);
-
-            System.Drawing.Point pointConvert = new System.Drawing.Point((int)boardLocationPoint.X, (int)boardLocationPoint.Y);
-          
-            pictureBox.Location = pointConvert;
-            pictureBox.Width = (int)grdBoard.ActualWidth;
-            pictureBox.Height = (int)grdBoard.ActualHeight;
-
-            System.Windows.MessageBox.Show("thisBoxPaint");
-
-           Graphics g = e.Graphics;
-            System.Drawing.FontFamily fontFamily = new System.Drawing.FontFamily("Arial");
-            Font font = new Font(
-                  fontFamily,
-                  16,
-                  System.Drawing.FontStyle.Regular,
-                  GraphicsUnit.Pixel);
-
-            System.Windows.Point SquarePositionPoint= new System.Windows.Point();
-            // var squarePosition = piecesList[2].CurrentLocation. PointToScreen(SquarePositionPoint);
-
-            var squarePosition = piecesList[2].CurrentLocation.TransformToAncestor(this).Transform(SquarePositionPoint);
-            var thisSquare = piecesList[2].CurrentLocation;
-
-            //var squareLoc = piecesList[1].CurrentLocation;
-           
-
-           RectangleF pieceLocationRect = new RectangleF((float)squarePosition.X, (float)squarePosition.Y, (float)thisSquare.ActualWidth, (float)thisSquare.ActualHeight);
-
-
-            g.DrawString("hello", font, new SolidBrush(System.Drawing.Color.Red), pieceLocationRect);
-        }
-
-       /* protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-        }*/
-
-        private void MainWindow_PiecePrintedEvent(object sender, string e)
-        {
-            System.Windows.MessageBox.Show(e);
-        }
 
         public void IdentifyClick(object obj, MouseButtonEventArgs e)
         {
@@ -222,7 +162,7 @@ namespace GuiChessboard
         {
             System.Windows.Controls.Border thisSquare = (System.Windows.Controls.Border)obj;
             Piece originatingPiece = availableEmptySquares.GetValueOrDefault(thisSquare);
-
+           
             originatingPiece.CurrentLocation = thisSquare;
 
             PaintEmptyBoardColors();
@@ -262,68 +202,44 @@ namespace GuiChessboard
         {
             for(int i = 0; i< piecesList.Count; i++)
             {
+                var thisPiece = piecesList[i];
+                var thisPosition = new Position(thisPiece.XPos, thisPiece.YPos);
+                var thisLabel = Position.GetPositionLabel(grdBoard, thisPosition);
                 var thisColor = piecesList[i].Color.ToString();
                 SolidColorBrush colorConvertor = (SolidColorBrush)new BrushConverter().ConvertFromString(thisColor);
-                piecesList[i].CurrentLocation.Background = colorConvertor;
-                piecesList[i].PaintPieceLabel();
+
+                thisPiece.CurrentLocation.Background = colorConvertor;
+                thisLabel.Content = thisPiece.Name.ToString();
+                
+             
             }
 
-            pictureBox.Refresh();
+          
         }
     
      
 
 
-        public void PaintLabel(Object obj, PaintEventArgs e)
-        {
-
-            System.Windows.MessageBox.Show("paintLabel");
-          /* System.Drawing.FontFamily fontFamily = new System.Drawing.FontFamily("Arial");
-            Font font = new Font(
-                  fontFamily,
-                  16,
-                  System.Drawing.FontStyle.Regular,
-                  GraphicsUnit.Pixel);
-
-            for (int i = 0; i < piecesList.Count; i++)
-            {
-                var thisColor = piecesList[i].Color.ToString();
-                SolidColorBrush colorConvertor = (SolidColorBrush)new BrushConverter().ConvertFromString(thisColor);
-                var pieceLocation = piecesList[i].CurrentLocation.RenderedGeometry.Bounds;
-
-
-
-                RectangleF pieceLocationRect = new RectangleF((float)pieceLocation.X, (float)pieceLocation.Y, (float)pieceLocation.Width, (float)pieceLocation.Height);
-
-
-
-               // piecesList[i].CurrentLocation.Fill = colorConvertor;
-               // e.Graphics.DrawString(piecesList[i].Name.ToString().Substring(0, 2), font, System.Drawing.Brushes.Yellow, pieceLocationRect);
-          
-            }*/
-        }
+   
+        
 
          public void PaintPieces() //why a parameterless? so it runs first round without needing to click on somethign first 
          {
-
+            
              for (int i = 0; i < piecesList.Count; i++)
              {
-               
-               
+                var thisPiece = piecesList[i];
+                var thisPosition = new Position(thisPiece.XPos, thisPiece.YPos);
+                var thisLabel = Position.GetPositionLabel(grdBoard, thisPosition);
+
                 var thisColor = piecesList[i].Color.ToString();
                  SolidColorBrush colorConvertor = (SolidColorBrush)new BrushConverter().ConvertFromString(thisColor);
 
                  piecesList[i].CurrentLocation.Background = colorConvertor;
-                //piecesList[i].PaintPieceLabel();
+                thisLabel.Content = thisPiece.Name.ToString();
 
-             }
-
-            pictureBox.Refresh();
-
+            }
         }
-
-       
-
 
 
 
@@ -335,7 +251,9 @@ namespace GuiChessboard
                 if (thing.GetType() == typeof(System.Windows.Controls.Border))
                 {
                     System.Windows.Controls.Border thisThing = (System.Windows.Controls.Border)thing;
-                    emptyBoardColors.Add(thisThing.Background);
+
+                    //if(thisThing.Background!=null)
+                        emptyBoardColors.Add(thisThing.Background);
                 }
                 else
                     emptyBoardColors.Add(thing);
@@ -349,6 +267,7 @@ namespace GuiChessboard
             {
                 var previousColor = emptyBoardColors[i];
 
+               
                 if (previousColor.GetType() == typeof(System.Windows.Media.SolidColorBrush))
                 {
                     System.Windows.Controls.Border thing = (System.Windows.Controls.Border)grdBoard.Children[i];

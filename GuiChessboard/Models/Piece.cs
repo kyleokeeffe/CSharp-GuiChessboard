@@ -12,7 +12,7 @@ namespace GuiChessboard.Models
 {
     public class Piece
     {
-        public event EventHandler<string> PiecePrintedEvent;
+      
         public delegate MovementPattern MyDelegate(int xPos, int yPos, PieceColour color);
 
    
@@ -88,13 +88,7 @@ namespace GuiChessboard.Models
             this.Color = color;
             this.CurrentLocation = currentLocation;
         }
-        public void PaintPieceLabel()
-        {
-
-            
-
-           PiecePrintedEvent?.Invoke(this, this.Name.ToString());
-        }
+    
        
         public override string ToString()
         {
