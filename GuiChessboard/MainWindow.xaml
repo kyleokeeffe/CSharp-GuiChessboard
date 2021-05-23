@@ -50,11 +50,12 @@
                 <Label Content="6" Grid.Row="3" Grid.Column="0"/>
                 <Label Content="7" Grid.Row="2" Grid.Column="0"/>
                 <Label Content="8" Grid.Row="1" Grid.Column="0"/>
-         
-            <Border Name="wholeBoard" BorderThickness="2" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="8" Grid.RowSpan="8"></Border>
-        <Label Name="lblMobile"></Label>
 
-            <Rectangle Name="cell18" Grid.Column="1" Grid.Row="1" Fill="White"/>
+        <Border Name="wholeBoard" BorderThickness="2" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="8" Grid.RowSpan="8"/>
+        <WindowsFormsHost Name="windowsFormHost"/>
+
+
+        <Rectangle Name="cell18" Grid.Column="1" Grid.Row="1" Fill="White"/>
             <Rectangle Name="cell28" Grid.Column="2" Grid.Row="1" Fill="Gray"/>
             <Rectangle Name="cell38" Grid.Column="3" Grid.Row="1" Fill="White"/>
             <Rectangle Name="cell48" Grid.Column="4" Grid.Row="1" Fill="Gray"/>
@@ -73,7 +74,7 @@
             <Rectangle Name="cell87" Grid.Column="8" Grid.Row="2" Fill="White"/>
 
             <Rectangle Name="cell16" Grid.Column="1" Grid.Row="3" Fill="White"/>
-            <Rectangle Name="cell26" Grid.Column="2" Grid.Row="3" Fill="Gray"/> <Label Grid.Column="2" Grid.Row="3" Name="lblcell26">Kn</Label>
+            <Rectangle Name="cell26" Grid.Column="2" Grid.Row="3" Fill="Gray"/> 
        
             <Rectangle Name="cell36" Grid.Column="3" Grid.Row="3" Fill="White"/>
             <Rectangle Name="cell46" Grid.Column="4" Grid.Row="3" Fill="Gray"/>
@@ -125,12 +126,13 @@
             <Rectangle Name="cell51" Grid.Column="5" Grid.Row="8" Fill="Gray"/>
             <Rectangle Name="cell61" Grid.Column="6" Grid.Row="8" Fill="White"/>
             <Rectangle Name="cell71" Grid.Column="7" Grid.Row="8" Fill="Gray"/>
-            <Rectangle Name="cell81" Grid.Column="8" Grid.Row="8" Fill="White"/>
+        <Border Name="cell81" Grid.Column="8" Grid.Row="8" Background="White">
+            
+            <Label Name="lblcell81" Content="df"/> </Border>
 
-    
-    
 
-    
 
-</Grid>
+
+
+    </Grid>
 </Window>

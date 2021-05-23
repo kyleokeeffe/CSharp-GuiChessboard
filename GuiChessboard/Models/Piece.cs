@@ -7,15 +7,20 @@ using GuiChessboard.Models;
 
 
 
+
 namespace GuiChessboard.Models
 {
     public class Piece
     {
+        public event EventHandler<string> PiecePrintedEvent;
         public delegate MovementPattern MyDelegate(int xPos, int yPos, PieceColour color);
+
+   
 
         public PieceType Name { get; set; }
         public PieceColour Color { get; set; }
-        public Rectangle CurrentLocation { get; set; }
+        
+        public System.Windows.Controls.Border CurrentLocation { get; set; }
         public int XPos
         {
             get
@@ -77,13 +82,20 @@ namespace GuiChessboard.Models
             }
         }
 
-        public Piece(PieceColour color,PieceType name, Rectangle currentLocation)
+        public Piece(PieceColour color,PieceType name, System.Windows.Controls.Border currentLocation)
         {
             this.Name = name;
             this.Color = color;
             this.CurrentLocation = currentLocation;
         }
-    
+        public void PaintPieceLabel()
+        {
+
+            
+
+           PiecePrintedEvent?.Invoke(this, this.Name.ToString());
+        }
+       
         public override string ToString()
         {
             return $"{this.Name}, {this.Color},{string.Join(", ", this.MovePattern.MoveFunctions.ToString())}";

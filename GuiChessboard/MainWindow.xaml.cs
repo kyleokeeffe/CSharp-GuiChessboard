@@ -16,12 +16,20 @@ using GuiChessboard.Models;
 using System.Collections;
 using System.Diagnostics;
 using System.Drawing;
+using System.Windows.Forms;
 
 //version 2 - refactored MainWindow
+
+//1. trying to figure out how to attach an event handler to a propoerty of an obejct 
+    //so that whenever the current location of a piece is set, it calls teh function to write the name
+
+//2. make overloaded direction method with distance limitation for pawn/king 
 namespace GuiChessboard
 {
     public partial class MainWindow : Window
     {
+       
+        private PictureBox pictureBox;
         public delegate void EventCreator(object obj, MouseButtonEventArgs e);
         
         ArrayList emptyBoardColors = new ArrayList();
@@ -29,11 +37,16 @@ namespace GuiChessboard
         protected Dictionary<System.Windows.Shapes.Rectangle, Piece> availableEmptySquares;
         protected Dictionary<System.Windows.Shapes.Rectangle, PieceTake> availableOccupiedSquares;
         
+
+     
         public MainWindow()
         {
             InitializeComponent();
        
             emptyBoardColors =  SaveEmptyBoardColors();
+
+            
+            //thisBox.Paint += new PaintEventHandler(this.thisBoxPaint);
 
             Piece bishop1 = new Piece(PieceColour.Black, PieceType.Bishop, cell43);
             Piece bishop2 = new Piece(PieceColour.White, PieceType.Bishop, cell65);
@@ -44,13 +57,79 @@ namespace GuiChessboard
             piecesList.Add(bishop2);
             piecesList.Add(rook1);
             piecesList.Add(queen1);
+            var thing = cell81;
 
-            lblMobile.Content = "hello";
-            lblMobile.Margin = new Thickness(0, 0, 100,100);
-
+            pictureBox = new PictureBox();
+            //pictureBox.Location = wholeBoard.Clip.Bounds.TopLeft;
+           
+            windowsFormHost.Child = pictureBox;
+           
+             //pictureBox.Paint += PaintLabel;
+           //or 
+           pictureBox.Paint += new PaintEventHandler(this.thisBoxPaint);
+            
             grdBoard.Loaded += PaintPieces;
-
+          
+            
             grdBoard.MouseDown += IdentifyClick;
+          
+           
+            foreach(Piece piece in piecesList)
+            {
+            piece.PiecePrintedEvent  += MainWindow_PiecePrintedEvent;///////////////////////////
+            }
+            
+            
+        }
+
+       
+
+        private void thisBoxPaint(object sender, PaintEventArgs e)
+        {
+
+        //    System.Drawing.Point boardLocation = new System.Drawing.Point((int)grdBoard.Margin.Left, (int)grdBoard.Margin.Top);
+           System.Windows.Point boardLocation = new System.Windows.Point();
+           var boardLocationPoint = grdBoard.TransformToAncestor(this).Transform(boardLocation);
+
+            System.Drawing.Point pointConvert = new System.Drawing.Point((int)boardLocationPoint.X, (int)boardLocationPoint.Y);
+          
+            pictureBox.Location = pointConvert;
+            pictureBox.Width = (int)grdBoard.ActualWidth;
+            pictureBox.Height = (int)grdBoard.ActualHeight;
+
+            System.Windows.MessageBox.Show("thisBoxPaint");
+
+           Graphics g = e.Graphics;
+            System.Drawing.FontFamily fontFamily = new System.Drawing.FontFamily("Arial");
+            Font font = new Font(
+                  fontFamily,
+                  16,
+                  System.Drawing.FontStyle.Regular,
+                  GraphicsUnit.Pixel);
+
+            System.Windows.Point SquarePositionPoint= new System.Windows.Point();
+            // var squarePosition = piecesList[2].CurrentLocation. PointToScreen(SquarePositionPoint);
+
+            var squarePosition = piecesList[2].CurrentLocation.TransformToAncestor(this).Transform(SquarePositionPoint);
+            var thisSquare = piecesList[2].CurrentLocation;
+
+            //var squareLoc = piecesList[1].CurrentLocation;
+           
+
+           RectangleF pieceLocationRect = new RectangleF((float)squarePosition.X, (float)squarePosition.Y, (float)thisSquare.ActualWidth, (float)thisSquare.ActualHeight);
+
+
+            g.DrawString("hello", font, new SolidBrush(System.Drawing.Color.Red), pieceLocationRect);
+        }
+
+       /* protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+        }*/
+
+        private void MainWindow_PiecePrintedEvent(object sender, string e)
+        {
+            System.Windows.MessageBox.Show(e);
         }
 
         public void IdentifyClick(object obj, MouseButtonEventArgs e)
@@ -108,43 +187,6 @@ namespace GuiChessboard
             availableEmptySquares = (Dictionary<System.Windows.Shapes.Rectangle, Piece>)patternSquares[0];
             availableOccupiedSquares = (Dictionary<System.Windows.Shapes.Rectangle, PieceTake>)patternSquares[1];
 
-            MovementPattern.CreatePattern(grdBoard,pieceClicked);
-
-            /*
-
-            //fill move square arrays
-            for (int i = 0; i < pieceClicked.MovePattern.MoveFunctions.Count; i++)
-            {
-                Position thisPosition;
-                int j = 0;
-                bool keepGoing = true;
-                do
-                {
-                    
-                    InnerPattern thing = (InnerPattern)pieceClicked.MovePattern.MoveFunctions[i];
-                    thisPosition = thing(x, y, directionModifier, (j + 1));
-                    Piece intersectingPiece;
-                    intersectingPiece = CheckSquareForPiece(thisPosition);
-                    ConvertPositionToSquare(thisPosition);
-                    if (thisPosition.X > 0 && thisPosition.X < 9 && thisPosition.Y < 9 && thisPosition.Y > 0)//why? to allow the do while to test the first runthrough - shoudl be using a while, but testing valueis made inside while - probably away to do this //didnt work
-                    {
-                        if (intersectingPiece == null)
-                            availableEmptySquares.Add(ConvertPositionToSquare(thisPosition), pieceClicked);
-                        else
-                        {
-                            availableOccupiedSquares.Add(ConvertPositionToSquare(thisPosition), new PieceTake(pieceClicked, intersectingPiece));
-                            break;
-                        }
-                        j++;
-                    }
-                    else
-                        keepGoing = false;
-                }
-                while (keepGoing);
-               // while (thisPosition.X > 1 && thisPosition.X < 8 && thisPosition.Y < 8 && thisPosition.Y > 1);
-            }
-            */
-
             //paint squares
             if (availableEmptySquares != null)
             {
@@ -198,7 +240,7 @@ namespace GuiChessboard
             PaintEmptyBoardColors();
             PaintPieces();
          
-            MessageBox.Show($"{thisPiecetake.OriginatingPiece.Color} {thisPiecetake.OriginatingPiece.Name} takes {thisPiecetake.DestinationPiece.Color} {thisPiecetake.DestinationPiece.Name}");
+            System.Windows.MessageBox.Show($"{thisPiecetake.OriginatingPiece.Color} {thisPiecetake.OriginatingPiece.Name} takes {thisPiecetake.DestinationPiece.Color} {thisPiecetake.DestinationPiece.Name}");
         }
 
         public static Piece CheckSquareForPiece(Position position)
@@ -216,35 +258,74 @@ namespace GuiChessboard
             return thisPiece;
         }
         
-        public void PaintPieces(object obj, EventArgs e)
-        { 
+        public void PaintPieces(Object obj, EventArgs e)
+        {
             for(int i = 0; i< piecesList.Count; i++)
             {
                 var thisColor = piecesList[i].Color.ToString();
                 SolidColorBrush colorConvertor = (SolidColorBrush)new BrushConverter().ConvertFromString(thisColor);
-               
                 piecesList[i].CurrentLocation.Fill = colorConvertor;
+                piecesList[i].PaintPieceLabel();
             }
-        
-        }
 
-        public void PaintPieces()
+            pictureBox.Refresh();
+        }
+    
+     
+
+
+        public void PaintLabel(Object obj, PaintEventArgs e)
         {
+
+            System.Windows.MessageBox.Show("paintLabel");
+          /* System.Drawing.FontFamily fontFamily = new System.Drawing.FontFamily("Arial");
+            Font font = new Font(
+                  fontFamily,
+                  16,
+                  System.Drawing.FontStyle.Regular,
+                  GraphicsUnit.Pixel);
+
             for (int i = 0; i < piecesList.Count; i++)
             {
                 var thisColor = piecesList[i].Color.ToString();
                 SolidColorBrush colorConvertor = (SolidColorBrush)new BrushConverter().ConvertFromString(thisColor);
+                var pieceLocation = piecesList[i].CurrentLocation.RenderedGeometry.Bounds;
 
-                piecesList[i].CurrentLocation.Fill = colorConvertor;
-                
-                //Trying to figure out how to print label in same square as piece
-                // piecesList[i].CurrentLocation.Fill=
-                //var thisPieceLocation = piecesList[i].CurrentLocation.RenderedGeometry.Bounds;
-                //lblMobile.Content = piecesList[i].Name.ToString().Substring(0, 2);
-                //lblMobile.Margin = new Thickness(thisPieceLocation.Left, thisPieceLocation.Top, thisPieceLocation.Right, thisPieceLocation.Bottom);
-            }
+
+
+                RectangleF pieceLocationRect = new RectangleF((float)pieceLocation.X, (float)pieceLocation.Y, (float)pieceLocation.Width, (float)pieceLocation.Height);
+
+
+
+               // piecesList[i].CurrentLocation.Fill = colorConvertor;
+               // e.Graphics.DrawString(piecesList[i].Name.ToString().Substring(0, 2), font, System.Drawing.Brushes.Yellow, pieceLocationRect);
+          
+            }*/
+        }
+
+         public void PaintPieces() //why a parameterless? so it runs first round without needing to click on somethign first 
+         {
+
+             for (int i = 0; i < piecesList.Count; i++)
+             {
+               
+               
+                var thisColor = piecesList[i].Color.ToString();
+                 SolidColorBrush colorConvertor = (SolidColorBrush)new BrushConverter().ConvertFromString(thisColor);
+
+                 piecesList[i].CurrentLocation.Fill = colorConvertor;
+                //piecesList[i].PaintPieceLabel();
+
+             }
+
+            pictureBox.Refresh();
 
         }
+
+       
+
+
+
 
         public ArrayList SaveEmptyBoardColors()
         {
