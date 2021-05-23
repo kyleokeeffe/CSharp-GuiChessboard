@@ -18,9 +18,14 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
-//version 2 - refactored MainWindow
+//version 
+//need to erase label contents as piece position chagnes
+    //either redraw all labesl as empty, or 
+    //set previous position label to empty <-
+//1.piece class should have a position property
+//then current square is derived from this,
+//then current label is derived from current square 
 
-//piece class should have a position property and current square, current label
 
 //2. make overloaded direction method with distance limitation for pawn/king 
 namespace GuiChessboard
@@ -162,7 +167,10 @@ namespace GuiChessboard
         {
             System.Windows.Controls.Border thisSquare = (System.Windows.Controls.Border)obj;
             Piece originatingPiece = availableEmptySquares.GetValueOrDefault(thisSquare);
-           
+          
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////need reference to child of current location if its a label(if it has content property)
+
+
             originatingPiece.CurrentLocation = thisSquare;
 
             PaintEmptyBoardColors();
