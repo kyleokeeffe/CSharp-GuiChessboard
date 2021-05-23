@@ -34,8 +34,8 @@ namespace GuiChessboard
         
         ArrayList emptyBoardColors = new ArrayList();
         static List<Piece> piecesList = new List<Piece>();
-        protected Dictionary<System.Windows.Shapes.Rectangle, Piece> availableEmptySquares;
-        protected Dictionary<System.Windows.Shapes.Rectangle, PieceTake> availableOccupiedSquares;
+        protected Dictionary<System.Windows.Controls.Border, Piece> availableEmptySquares;
+        protected Dictionary<System.Windows.Controls.Border, PieceTake> availableOccupiedSquares;
         
 
      
@@ -57,7 +57,7 @@ namespace GuiChessboard
             piecesList.Add(bishop2);
             piecesList.Add(rook1);
             piecesList.Add(queen1);
-            var thing = cell81;
+          
 
             pictureBox = new PictureBox();
             //pictureBox.Location = wholeBoard.Clip.Bounds.TopLeft;
@@ -134,7 +134,7 @@ namespace GuiChessboard
 
         public void IdentifyClick(object obj, MouseButtonEventArgs e)
         {
-            var pieceClicked = piecesList.Find(piece => piece.CurrentLocation == (System.Windows.Shapes.Rectangle)e.Source);
+            var pieceClicked = piecesList.Find(piece => piece.CurrentLocation == (System.Windows.Controls.Border)e.Source);
 
             if (pieceClicked != null)
                 PaintPieceMovePattern(pieceClicked);
@@ -143,9 +143,9 @@ namespace GuiChessboard
                 PaintEmptyBoardColors();
                 PaintPieces();
             }
-            else if (availableEmptySquares.ContainsKey((System.Windows.Shapes.Rectangle)e.Source) == false)
+            else if (availableEmptySquares.ContainsKey((System.Windows.Controls.Border)e.Source) == false)
             {
-                foreach (System.Windows.Shapes.Rectangle emptySquare in availableEmptySquares.Keys)
+                foreach (System.Windows.Controls.Border emptySquare in availableEmptySquares.Keys)
                     emptySquare.MouseLeftButtonDown -= EmptyMoveSquareClicked;
 
                 foreach (var pieceSquare in availableOccupiedSquares.Keys)
@@ -168,7 +168,7 @@ namespace GuiChessboard
             //if the new click is on another piece, remove the event listeners for the previous piece clicked
             if (availableEmptySquares != null)
             {
-                foreach (System.Windows.Shapes.Rectangle emptySquare in availableEmptySquares.Keys)
+                foreach (System.Windows.Controls.Border emptySquare in availableEmptySquares.Keys)
                     emptySquare.MouseLeftButtonDown -= EmptyMoveSquareClicked;
             }
             
@@ -180,19 +180,19 @@ namespace GuiChessboard
 
 
             //if this method has not been run before, initialize move square arrays
-            availableEmptySquares = new Dictionary<System.Windows.Shapes.Rectangle, Piece>();
-            availableOccupiedSquares = new Dictionary<System.Windows.Shapes.Rectangle, PieceTake>();
+            availableEmptySquares = new Dictionary<System.Windows.Controls.Border, Piece>();
+            availableOccupiedSquares = new Dictionary<System.Windows.Controls.Border, PieceTake>();
 
             ArrayList patternSquares= MovementPattern.CreatePattern(grdBoard,pieceClicked);
-            availableEmptySquares = (Dictionary<System.Windows.Shapes.Rectangle, Piece>)patternSquares[0];
-            availableOccupiedSquares = (Dictionary<System.Windows.Shapes.Rectangle, PieceTake>)patternSquares[1];
+            availableEmptySquares = (Dictionary<System.Windows.Controls.Border, Piece>)patternSquares[0];
+            availableOccupiedSquares = (Dictionary<System.Windows.Controls.Border, PieceTake>)patternSquares[1];
 
             //paint squares
             if (availableEmptySquares != null)
             {
-                foreach (System.Windows.Shapes.Rectangle emptySquare in availableEmptySquares.Keys)
+                foreach (System.Windows.Controls.Border emptySquare in availableEmptySquares.Keys)
                 {
-                    emptySquare.Fill = System.Windows.Media.Brushes.Green;
+                    emptySquare.Background = System.Windows.Media.Brushes.Green;
                     emptySquare.MouseLeftButtonDown += EmptyMoveSquareClicked;  
                 }
             }
@@ -201,7 +201,7 @@ namespace GuiChessboard
             {
                  foreach (var pieceSquare in availableOccupiedSquares.Keys)
                     {
-                        pieceSquare.Fill = System.Windows.Media.Brushes.Orange;
+                        pieceSquare.Background = System.Windows.Media.Brushes.Orange;
                         pieceSquare.MouseLeftButtonDown += OccupiedMoveSquareClicked;
                     }
             }
@@ -209,7 +209,7 @@ namespace GuiChessboard
 
         public void EmptySquareClicked(object obj, MouseButtonEventArgs e)
         {
-            System.Windows.Shapes.Rectangle thisSquare = (System.Windows.Shapes.Rectangle)obj;
+            System.Windows.Controls.Border thisSquare = (System.Windows.Controls.Border)obj;
             Piece originatingPiece = availableEmptySquares.GetValueOrDefault(thisSquare);
 
             originatingPiece.CurrentLocation = thisSquare;
@@ -220,7 +220,7 @@ namespace GuiChessboard
 
         public void EmptyMoveSquareClicked(object obj, MouseButtonEventArgs e)
         {
-            System.Windows.Shapes.Rectangle thisSquare = (System.Windows.Shapes.Rectangle)obj;
+            System.Windows.Controls.Border thisSquare = (System.Windows.Controls.Border)obj;
             Piece originatingPiece = availableEmptySquares.GetValueOrDefault(thisSquare);
 
             originatingPiece.CurrentLocation = thisSquare;
@@ -231,7 +231,7 @@ namespace GuiChessboard
 
         public void OccupiedMoveSquareClicked(object obj, MouseButtonEventArgs e)
         {
-            System.Windows.Shapes.Rectangle thisSquare = (System.Windows.Shapes.Rectangle)obj;
+            System.Windows.Controls.Border thisSquare = (System.Windows.Controls.Border)obj;
             PieceTake thisPiecetake = availableOccupiedSquares.GetValueOrDefault(thisSquare);
            
             thisPiecetake.OriginatingPiece.CurrentLocation = thisSquare;
@@ -264,7 +264,7 @@ namespace GuiChessboard
             {
                 var thisColor = piecesList[i].Color.ToString();
                 SolidColorBrush colorConvertor = (SolidColorBrush)new BrushConverter().ConvertFromString(thisColor);
-                piecesList[i].CurrentLocation.Fill = colorConvertor;
+                piecesList[i].CurrentLocation.Background = colorConvertor;
                 piecesList[i].PaintPieceLabel();
             }
 
@@ -313,7 +313,7 @@ namespace GuiChessboard
                 var thisColor = piecesList[i].Color.ToString();
                  SolidColorBrush colorConvertor = (SolidColorBrush)new BrushConverter().ConvertFromString(thisColor);
 
-                 piecesList[i].CurrentLocation.Fill = colorConvertor;
+                 piecesList[i].CurrentLocation.Background = colorConvertor;
                 //piecesList[i].PaintPieceLabel();
 
              }
@@ -332,10 +332,10 @@ namespace GuiChessboard
             ArrayList emptyBoardColors = new ArrayList();
             foreach (var thing in grdBoard.Children)
             {
-                if (thing.GetType() == typeof(System.Windows.Shapes.Rectangle))
+                if (thing.GetType() == typeof(System.Windows.Controls.Border))
                 {
-                    System.Windows.Shapes.Rectangle thisThing = (System.Windows.Shapes.Rectangle)thing;
-                    emptyBoardColors.Add(thisThing.Fill);
+                    System.Windows.Controls.Border thisThing = (System.Windows.Controls.Border)thing;
+                    emptyBoardColors.Add(thisThing.Background);
                 }
                 else
                     emptyBoardColors.Add(thing);
@@ -351,8 +351,8 @@ namespace GuiChessboard
 
                 if (previousColor.GetType() == typeof(System.Windows.Media.SolidColorBrush))
                 {
-                    System.Windows.Shapes.Rectangle thing = (System.Windows.Shapes.Rectangle)grdBoard.Children[i];
-                    thing.Fill = (System.Windows.Media.Brush)previousColor;
+                    System.Windows.Controls.Border thing = (System.Windows.Controls.Border)grdBoard.Children[i];
+                    thing.Background = (System.Windows.Media.Brush)previousColor;
                 }
             }
         }

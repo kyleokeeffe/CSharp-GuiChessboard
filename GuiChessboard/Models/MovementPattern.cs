@@ -20,8 +20,8 @@ namespace GuiChessboard.Models
 
         public static ArrayList CreatePattern(Grid gridBoard, Piece pieceClicked)
         {
-            Dictionary<System.Windows.Shapes.Rectangle, Piece> availableEmptySquares = new Dictionary<System.Windows.Shapes.Rectangle, Piece>();
-            Dictionary<System.Windows.Shapes.Rectangle, PieceTake> availableOccupiedSquares = new Dictionary<System.Windows.Shapes.Rectangle, PieceTake>();
+            Dictionary<System.Windows.Controls.Border, Piece> availableEmptySquares = new Dictionary<System.Windows.Controls.Border, Piece>();
+            Dictionary<System.Windows.Controls.Border, PieceTake> availableOccupiedSquares = new Dictionary<System.Windows.Controls.Border, PieceTake>();
             ArrayList patternSquares = new ArrayList();
 
             int directionModifier = (int)pieceClicked.Color;
@@ -37,7 +37,7 @@ namespace GuiChessboard.Models
                 {
                     InnerPattern moveFunctionDel = (InnerPattern)pieceClicked.MovePattern.MoveFunctions[i];
                     Piece intersectingPiece;
-                    Rectangle thisSquare;
+                    System.Windows.Controls.Border thisSquare;
 
                     thisPosition = moveFunctionDel(x, y, directionModifier, (j + 1));
                     intersectingPiece = MainWindow.CheckSquareForPiece(thisPosition);

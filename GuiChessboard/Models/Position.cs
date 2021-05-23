@@ -16,10 +16,10 @@ namespace GuiChessboard.Models
             this.X = x;
             this.Y = y;
         }
-        public static System.Windows.Shapes.Rectangle ConvertPositionToSquare(Grid gridBoard,Position position)
+        public static System.Windows.Controls.Border ConvertPositionToSquare(Grid gridBoard,Position position)
         {
             string name = $"cell{position.X}{position.Y}";
-            System.Windows.Shapes.Rectangle thisRect = (System.Windows.Shapes.Rectangle)gridBoard.FindName(name);
+            System.Windows.Controls.Border thisRect = (System.Windows.Controls.Border)gridBoard.FindName(name);
 
             return thisRect;
         }
