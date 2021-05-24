@@ -18,16 +18,11 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
-//version 
-//need to erase label contents as piece position chagnes
-    //either redraw all labesl as empty, or 
-    //set previous position label to empty <-
-//1.piece class should have a position property
-//then current square is derived from this,
-//then current label is derived from current square 
+//version 3 finished mechanics
+ 
 
 
-//2. make overloaded direction method with distance limitation for pawn/king 
+//1. make overloaded direction method with distance limitation for pawn/king 
 namespace GuiChessboard
 {
     public partial class MainWindow : Window
@@ -49,7 +44,7 @@ namespace GuiChessboard
        
             emptyBoardColors =  SaveEmptyBoardColors();
 
-     
+            
 
             Piece bishop1 = new Piece(PieceColour.Black, PieceType.Bishop, cell43);
             Piece bishop2 = new Piece(PieceColour.White, PieceType.Bishop, cell65);
@@ -167,9 +162,8 @@ namespace GuiChessboard
         {
             System.Windows.Controls.Border thisSquare = (System.Windows.Controls.Border)obj;
             Piece originatingPiece = availableEmptySquares.GetValueOrDefault(thisSquare);
-          
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////need reference to child of current location if its a label(if it has content property)
 
+            originatingPiece.CurrentLabel.Content = "";
 
             originatingPiece.CurrentLocation = thisSquare;
 
@@ -181,7 +175,8 @@ namespace GuiChessboard
         {
             System.Windows.Controls.Border thisSquare = (System.Windows.Controls.Border)obj;
             PieceTake thisPiecetake = availableOccupiedSquares.GetValueOrDefault(thisSquare);
-           
+            thisPiecetake.OriginatingPiece.CurrentLabel.Content = "";
+            thisPiecetake.DestinationPiece.CurrentLabel.Content = "";
             thisPiecetake.OriginatingPiece.CurrentLocation = thisSquare;
 
             piecesList.Remove(thisPiecetake.DestinationPiece);
@@ -210,14 +205,20 @@ namespace GuiChessboard
         {
             for(int i = 0; i< piecesList.Count; i++)
             {
-                var thisPiece = piecesList[i];
-                var thisPosition = new Position(thisPiece.XPos, thisPiece.YPos);
-                var thisLabel = Position.GetPositionLabel(grdBoard, thisPosition);
-                var thisColor = piecesList[i].Color.ToString();
-                SolidColorBrush colorConvertor = (SolidColorBrush)new BrushConverter().ConvertFromString(thisColor);
+               var thisPiece = piecesList[i];
 
-                thisPiece.CurrentLocation.Background = colorConvertor;
-                thisLabel.Content = thisPiece.Name.ToString();
+                var thisPieceColor = piecesList[i].Color.ToString();
+                var oppositeColour = (int)piecesList[i].Color * -1;
+                var thisPieceLabelColor = Enum.GetName(typeof(PieceColour), oppositeColour);
+
+
+
+                SolidColorBrush pieceSquareBrush = (SolidColorBrush)new BrushConverter().ConvertFromString(thisPieceColor);
+                SolidColorBrush pieceLabelBrush = (SolidColorBrush)new BrushConverter().ConvertFromString(thisPieceLabelColor);
+
+                thisPiece.CurrentLocation.Background = pieceSquareBrush;
+                thisPiece.CurrentLabel.Foreground = pieceLabelBrush;
+                thisPiece.CurrentLabel.Content = thisPiece.Name;
                 
              
             }
@@ -237,14 +238,19 @@ namespace GuiChessboard
              for (int i = 0; i < piecesList.Count; i++)
              {
                 var thisPiece = piecesList[i];
-                var thisPosition = new Position(thisPiece.XPos, thisPiece.YPos);
-                var thisLabel = Position.GetPositionLabel(grdBoard, thisPosition);
+           
 
-                var thisColor = piecesList[i].Color.ToString();
-                 SolidColorBrush colorConvertor = (SolidColorBrush)new BrushConverter().ConvertFromString(thisColor);
+                var thisPieceColor = piecesList[i].Color.ToString();
+                var oppositeColour = (int)piecesList[i].Color * -1;
+                var thisPieceLabelColor = Enum.GetName(typeof(PieceColour), oppositeColour);
+              
+                SolidColorBrush pieceSquareBrush = (SolidColorBrush)new BrushConverter().ConvertFromString(thisPieceColor);
+                SolidColorBrush pieceLabelBrush = (SolidColorBrush)new BrushConverter().ConvertFromString(thisPieceLabelColor);
 
-                 piecesList[i].CurrentLocation.Background = colorConvertor;
-                thisLabel.Content = thisPiece.Name.ToString();
+
+                thisPiece.CurrentLocation.Background = pieceSquareBrush;
+                thisPiece.CurrentLabel.Foreground = pieceLabelBrush;
+                thisPiece.CurrentLabel.Content = thisPiece.Name;
 
             }
         }
@@ -260,7 +266,7 @@ namespace GuiChessboard
                 {
                     System.Windows.Controls.Border thisThing = (System.Windows.Controls.Border)thing;
 
-                    //if(thisThing.Background!=null)
+           
                         emptyBoardColors.Add(thisThing.Background);
                 }
                 else

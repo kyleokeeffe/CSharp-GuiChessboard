@@ -4,6 +4,8 @@ using System.Text;
 using System.Windows.Shapes;
 using System.Collections;
 using GuiChessboard.Models;
+using System.Windows.Controls;
+using System.Windows;
 
 
 
@@ -21,6 +23,30 @@ namespace GuiChessboard.Models
         public PieceColour Color { get; set; }
         
         public System.Windows.Controls.Border CurrentLocation { get; set; }
+        public System.Windows.Controls.Label CurrentLabel { 
+            get 
+            {
+                System.Windows.Controls.Label thisLabel = new Label();
+                 string name = $"lbl{CurrentLocation.Name}";
+                
+              
+               
+                foreach (Window window in Application.Current.Windows)
+                {
+                    if (window.GetType() == typeof(MainWindow))
+                    {
+                        thisLabel = (System.Windows.Controls.Label)(window as MainWindow).grdBoard.FindName(name); 
+                    }
+                }
+                //https://stackoverflow.com/questions/13644114/how-can-i-access-a-control-in-wpf-from-another-class-or-window
+
+            return thisLabel;
+
+            }
+            set 
+            {
+            } 
+        }
         public int XPos
         {
             get
