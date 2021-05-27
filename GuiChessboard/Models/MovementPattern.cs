@@ -9,7 +9,6 @@ using System.Windows.Controls;
 namespace GuiChessboard.Models
 { 
     public delegate Position InnerPattern(int x, int y, int directionModifier, int index);
-   //public delegate Position InnerPatternLimited(int x, int y, int directionModifier, int index, int distanceLimit);
 
     public class MovementPattern
     {
@@ -40,15 +39,11 @@ namespace GuiChessboard.Models
                     InnerPattern moveFunctionDel = (InnerPattern)pieceClicked.MovePattern.MoveFunctions[i];
                     Piece intersectingPiece;
                     System.Windows.Controls.Border thisSquare;
-                    //get distance limit
-                    //check piece, move function, piece location, 
+            
                     thisPosition = moveFunctionDel(x, y, directionModifier, (j + 1));
-
                     intersectingPiece = MainWindow.CheckSquareForPiece(thisPosition);
                     thisSquare = Position.GetPositionSquare(gridBoard,thisPosition);
                     
-
-                    //could do if distance limit reached equals true then dont do the following
                     if (thisPosition.X > 0 && thisPosition.X < 9 && thisPosition.Y < 9 && thisPosition.Y > 0)
                     {
                         if (intersectingPiece == null)
@@ -156,34 +151,63 @@ namespace GuiChessboard.Models
         public static MovementPattern PawnPattern(int x, int y, PieceColour color)
         {
             int directionModifier = (int)color;
-
-            InnerPattern pawnForward;
             ArrayList pieceDirections = new ArrayList();
 
-            if ((y == 1 && color == PieceColour.Black) || (y == 8 && color == PieceColour.White))
-                pawnForward = new InnerPattern(ForwardTwo);
-            else
-                pawnForward = new InnerPattern(ForwardOne);
+            InnerPattern CheckForwardOne()
+            {
+                if (MainWindow.CheckSquareForPiece(new Position(x, y + (1 * directionModifier))) != null)
+                    return null;
+                else
+                    return new InnerPattern(ForwardOne);
+            }
 
-            pieceDirections.Add(pawnForward);
+            InnerPattern CheckForwardTwo()
+            {
+                if (MainWindow.CheckSquareForPiece(new Position(x, y + (2 * directionModifier))) != null)
 
-            if (MainWindow.CheckSquareForPiece(new Position(x + 1, y + (1 * directionModifier))) != null) 
-                pieceDirections.Add(new InnerPattern(ForwardRightOne));
+                    return CheckForwardOne();
+                else
+                    return new InnerPattern(ForwardTwo);
+            }
+
+            InnerPattern CheckForwardLeftOne()
+            {
+                if (MainWindow.CheckSquareForPiece(new Position(x - (1*directionModifier), y + (1 * directionModifier))) != null)
+                    return new InnerPattern(ForwardLeftOne);
+                else
+                    return null;
+            }
+
+            InnerPattern CheckForwardRightOne()
+            {
+                if (MainWindow.CheckSquareForPiece(new Position(x + (1*directionModifier), y + (1 * directionModifier))) != null)
+                    return new InnerPattern(ForwardRightOne);
+                else
+                    return null;
+            }
+
+            InnerPattern CheckOnFirstRow()
+            {
+                if ((y == 2 && color == PieceColour.Black) || (y == 8 && color == PieceColour.White))
+                {
+                    return CheckForwardTwo();
+                }
+                else
+                    return CheckForwardOne();
+            }
             
-            if(MainWindow.CheckSquareForPiece(new Position(x - 1, y + (1 * directionModifier))) != null)
-                pieceDirections.Add(new InnerPattern(ForwardLeftOne));
-
+            if(CheckOnFirstRow()!=null)
+                pieceDirections.Add(CheckOnFirstRow());
+            if (CheckForwardLeftOne()!= null)
+                pieceDirections.Add(CheckForwardLeftOne());
+            if(CheckForwardRightOne()!=null)
+                pieceDirections.Add(CheckForwardRightOne());
 
             return new MovementPattern(pieceDirections);
         }
         
-
-
         public static Position Forward(int x, int y, int directionModifier, int index)
         {
-            
-            
-            
             int newX, newY;
 
             newX = x;
@@ -194,10 +218,6 @@ namespace GuiChessboard.Models
 
         public static Position ForwardOne(int x, int y, int directionModifier, int index)
         {
-
-            
-
-
             int newX, newY;
 
             newX = x;
@@ -208,20 +228,16 @@ namespace GuiChessboard.Models
 
         public static Position ForwardTwo(int x, int y, int directionModifier, int index)
         {
-
-            
-
-
             int newX, newY;
 
             newX = x;
             newY = y + (index * directionModifier);
-           if(index==1)
+
+            if(index>=2)
                 distanceLimitReached = true;
+
             return new Position(newX, newY);
         }
-
-
 
         public static Position ForwardLeft(int x, int y, int directionModifier, int index)
         {
@@ -232,6 +248,7 @@ namespace GuiChessboard.Models
 
             return new Position(newX, newY);
         }
+
         public static Position ForwardLeftOne(int x, int y, int directionModifier, int index)
         {
             int newX, newY;
