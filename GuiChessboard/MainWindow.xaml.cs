@@ -50,15 +50,17 @@ namespace GuiChessboard
             Piece bishop2 = new Piece(PieceColour.White, PieceType.Bishop, cell65);
             Piece rook1 = new Piece(PieceColour.Black, PieceType.Rook, cell55);
             Piece queen1 = new Piece(PieceColour.Black, PieceType.Queen, cell33);
+            Piece pawn1 = new Piece(PieceColour.Black, PieceType.Pawn, cell31);
 
             piecesList.Add(bishop1);
             piecesList.Add(bishop2);
             piecesList.Add(rook1);
             piecesList.Add(queen1);
-          
+            piecesList.Add(pawn1);
 
-       
-            
+
+
+
             grdBoard.Loaded += PaintPieces;
           
             
