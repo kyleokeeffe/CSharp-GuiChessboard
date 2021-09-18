@@ -7,7 +7,7 @@ namespace GuiChessboard.Models
 {
     public enum PieceColour
     {
-        White=-1,
+        Purple=-1,
         Black=1
     }
 }

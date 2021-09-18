@@ -35,17 +35,22 @@ namespace GuiChessboard
        
             emptyBoardColors =  SaveEmptyBoardColors();
 
-            Piece bishop1 = new Piece(PieceColour.Black, PieceType.Bishop, cell43);
-            Piece bishop2 = new Piece(PieceColour.White, PieceType.Bishop, cell65);
-            Piece rook1 = new Piece(PieceColour.Black, PieceType.Rook, cell55);
-            Piece queen1 = new Piece(PieceColour.Black, PieceType.Queen, cell33);
+            Piece bishop1 = new Piece(PieceColour.Black, PieceType.Bishop, cell31);
+            Piece rook1 = new Piece(PieceColour.Black, PieceType.Rook, cell81);
+            Piece queen1 = new Piece(PieceColour.Black, PieceType.Queen, cell51);
+
+            Piece bishop2 = new Piece(PieceColour.Purple, PieceType.Bishop, cell38);
+            Piece rook2 = new Piece(PieceColour.Purple, PieceType.Rook, cell88);
+            Piece queen2 = new Piece(PieceColour.Purple, PieceType.Queen, cell58);
 
             piecesList.Add(bishop1);
             piecesList.Add(bishop2);
             piecesList.Add(rook1);
+            piecesList.Add(rook2);
             piecesList.Add(queen1);
+            piecesList.Add(queen2);
 
-            lblMobile.Content = "hello";
+            //lblMobile.Content = "hello";
             lblMobile.Margin = new Thickness(0, 0, 100,100);
 
             grdBoard.Loaded += PaintPieces;
